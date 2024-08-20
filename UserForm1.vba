@@ -1,18 +1,3 @@
-VERSION 5.00
-Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} UserForm1 
-   Caption         =   "Окно выбора сечения провода"
-   ClientHeight    =   2535
-   ClientLeft      =   120
-   ClientTop       =   468
-   ClientWidth     =   3792
-   OleObjectBlob   =   "UserForm1.frx":0000
-   StartUpPosition =   1  'CenterOwner
-End
-Attribute VB_Name = "UserForm1"
-Attribute VB_GlobalNameSpace = False
-Attribute VB_Creatable = False
-Attribute VB_PredeclaredId = True
-Attribute VB_Exposed = False
 Private Sub UserForm_Initialize()
     Dim rng As Range
     Dim cell As Range
@@ -23,8 +8,8 @@ Private Sub UserForm_Initialize()
     Set dict = CreateObject("Scripting.Dictionary")
     
     
-    ' Предполагая, что данные начинаются с F2
-    Set rng = ThisWorkbook.Sheets("Ввод_данных").Range("F2:F" & ThisWorkbook.Sheets("Ввод_данных").Cells(Rows.Count, "F").End(xlUp).Row)
+    ' РџСЂРµРґРїРѕР»Р°РіР°СЏ, С‡С‚Рѕ РґР°РЅРЅС‹Рµ РЅР°С‡РёРЅР°СЋС‚СЃСЏ СЃ F2
+    Set rng = ThisWorkbook.Sheets("Р’РІРѕРґ_РґР°РЅРЅС‹С…").Range("F2:F" & ThisWorkbook.Sheets("Р’РІРѕРґ_РґР°РЅРЅС‹С…").Cells(Rows.Count, "F").End(xlUp).Row)
     
     For Each cell In rng
         If Not dict.Exists(cell.Value) And IsNumeric(cell.Value) Then
@@ -67,14 +52,14 @@ Private Sub CommandButton1_Click()
     Dim rngBlockJ As Range
     Dim rngBlockK As Range
     
-    Set wsData = ThisWorkbook.Sheets("Ввод_данных")
-    Set wsRecord = ThisWorkbook.Sheets("Запись")
-    Set wsOutput = ThisWorkbook.Sheets("Вывод")
+    Set wsData = ThisWorkbook.Sheets("Р’РІРѕРґ_РґР°РЅРЅС‹С…")
+    Set wsRecord = ThisWorkbook.Sheets("Р—Р°РїРёСЃСЊ")
+    Set wsOutput = ThisWorkbook.Sheets("Р’С‹РІРѕРґ")
     
-    ' Очистить предыдущие фильтры
+    ' РћС‡РёСЃС‚РёС‚СЊ РїСЂРµРґС‹РґСѓС‰РёРµ С„РёР»СЊС‚СЂС‹
     wsData.AutoFilterMode = False
     
-    ' Преобразование значения ComboBox1 в строку (если не является числом)
+    ' РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёРµ Р·РЅР°С‡РµРЅРёСЏ ComboBox1 РІ СЃС‚СЂРѕРєСѓ (РµСЃР»Рё РЅРµ СЏРІР»СЏРµС‚СЃСЏ С‡РёСЃР»РѕРј)
     Dim filterCriteria As Variant
     
     If IsNumeric(ComboBox1.Value) Then
@@ -83,22 +68,22 @@ Private Sub CommandButton1_Click()
         filterCriteria = ComboBox1.Value
     End If
     
-    ' Отфильтровать столбец F на основе выбора ComboBox1
+    ' РћС‚С„РёР»СЊС‚СЂРѕРІР°С‚СЊ СЃС‚РѕР»Р±РµС† F РЅР° РѕСЃРЅРѕРІРµ РІС‹Р±РѕСЂР° ComboBox1
     'wsData.Range("F1").AutoFilter Field:=6, Criteria1:=filterCriteria
     wsData.Range("F1").AutoFilter Field:=6, Criteria1:="=" & filterCriteria & ""
     
-    ' Найти последнюю строку в столбце F
+    ' РќР°Р№С‚Рё РїРѕСЃР»РµРґРЅСЋСЋ СЃС‚СЂРѕРєСѓ РІ СЃС‚РѕР»Р±С†Рµ F
     lastRow = wsData.Cells(wsData.Rows.Count, "F").End(xlUp).Row
     
-    ' Вывести значение ComboBox1 в окно Immediate
-    Debug.Print "Значение ComboBox1: " & ComboBox1.Value
-    ' Вывести значение filterCriteria в окно Immediate
-    Debug.Print "Значение filterCriteria: " & filterCriteria
-    ' Вывести значение Criteria1 в окно Immediate
-    Debug.Print "Значение Criteria1: " & wsData.AutoFilter.Filters(6).Criteria1
+    ' Р’С‹РІРµСЃС‚Рё Р·РЅР°С‡РµРЅРёРµ ComboBox1 РІ РѕРєРЅРѕ Immediate
+    Debug.Print "Р—РЅР°С‡РµРЅРёРµ ComboBox1: " & ComboBox1.Value
+    ' Р’С‹РІРµСЃС‚Рё Р·РЅР°С‡РµРЅРёРµ filterCriteria РІ РѕРєРЅРѕ Immediate
+    Debug.Print "Р—РЅР°С‡РµРЅРёРµ filterCriteria: " & filterCriteria
+    ' Р’С‹РІРµСЃС‚Рё Р·РЅР°С‡РµРЅРёРµ Criteria1 РІ РѕРєРЅРѕ Immediate
+    Debug.Print "Р—РЅР°С‡РµРЅРёРµ Criteria1: " & wsData.AutoFilter.Filters(6).Criteria1
 
     
-    ' Определение количества строк для копирования на основе выбранного значения
+    ' РћРїСЂРµРґРµР»РµРЅРёРµ РєРѕР»РёС‡РµСЃС‚РІР° СЃС‚СЂРѕРє РґР»СЏ РєРѕРїРёСЂРѕРІР°РЅРёСЏ РЅР° РѕСЃРЅРѕРІРµ РІС‹Р±СЂР°РЅРЅРѕРіРѕ Р·РЅР°С‡РµРЅРёСЏ
     If ComboBox1.Value = 0.75 Or ComboBox1.Value = 1 Or ComboBox1.Value = 1.5 Then
         rowCount = 10
     ElseIf ComboBox1.Value = 2.5 Then
@@ -108,55 +93,55 @@ Private Sub CommandButton1_Click()
     ElseIf ComboBox1.Value >= 20 And ComboBox1.Value <= 100 Then
         rowCount = 6
     Else
-        rowCount = 0 ' Значение по умолчанию
+        rowCount = 0 ' Р—РЅР°С‡РµРЅРёРµ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
     End If
     
-    ' Задать диапазон для копирования
+    ' Р—Р°РґР°С‚СЊ РґРёР°РїР°Р·РѕРЅ РґР»СЏ РєРѕРїРёСЂРѕРІР°РЅРёСЏ
     Set rngData = wsData.Range("J2:K" & lastRow)
     Set rngRecord = wsRecord.Range("E2:F" & lastRow)
     
-    ' Очистить столбцы E и F на листе "Запись"
+    ' РћС‡РёСЃС‚РёС‚СЊ СЃС‚РѕР»Р±С†С‹ E Рё F РЅР° Р»РёСЃС‚Рµ "Р—Р°РїРёСЃСЊ"
     'wsRecord.Range("E2:F" & lastRow).ClearContents
     wsRecord.Range("E:E").ClearContents
     wsRecord.Range("F:F").ClearContents
     
-    ' Скопируйте видимые ячейки из столбцов J и K в столбцы E и F на листе "Запись"
+    ' РЎРєРѕРїРёСЂСѓР№С‚Рµ РІРёРґРёРјС‹Рµ СЏС‡РµР№РєРё РёР· СЃС‚РѕР»Р±С†РѕРІ J Рё K РІ СЃС‚РѕР»Р±С†С‹ E Рё F РЅР° Р»РёСЃС‚Рµ "Р—Р°РїРёСЃСЊ"
     rngData.SpecialCells(xlCellTypeVisible).Copy wsRecord.Range("E2")
     
-    ' Очистить столбец A на листе "Вывод"
+    ' РћС‡РёСЃС‚РёС‚СЊ СЃС‚РѕР»Р±РµС† A РЅР° Р»РёСЃС‚Рµ "Р’С‹РІРѕРґ"
     wsOutput.Range("A:A").ClearContents
     
     
-    ' Скопировать видимые ячейки из столбцов E и F на листе "Запись" в столбец A на листе "Вывод"
+    ' РЎРєРѕРїРёСЂРѕРІР°С‚СЊ РІРёРґРёРјС‹Рµ СЏС‡РµР№РєРё РёР· СЃС‚РѕР»Р±С†РѕРІ E Рё F РЅР° Р»РёСЃС‚Рµ "Р—Р°РїРёСЃСЊ" РІ СЃС‚РѕР»Р±РµС† A РЅР° Р»РёСЃС‚Рµ "Р’С‹РІРѕРґ"
     If Application.WorksheetFunction.Subtotal(103, rngRecord) > 1 Then
-        ' Скопировать данные в столбец A на листе 'Вывод' в соответствии с выбранным значением
+        ' РЎРєРѕРїРёСЂРѕРІР°С‚СЊ РґР°РЅРЅС‹Рµ РІ СЃС‚РѕР»Р±РµС† A РЅР° Р»РёСЃС‚Рµ 'Р’С‹РІРѕРґ' РІ СЃРѕРѕС‚РІРµС‚СЃС‚РІРёРё СЃ РІС‹Р±СЂР°РЅРЅС‹Рј Р·РЅР°С‡РµРЅРёРµРј
         For i = 1 To lastRow Step rowCount
-            ' Выбрать блок видимых строк для копирования из столбца E
+            ' Р’С‹Р±СЂР°С‚СЊ Р±Р»РѕРє РІРёРґРёРјС‹С… СЃС‚СЂРѕРє РґР»СЏ РєРѕРїРёСЂРѕРІР°РЅРёСЏ РёР· СЃС‚РѕР»Р±С†Р° E
             On Error Resume Next
             Set rngBlockJ = rngRecord.Columns(1).SpecialCells(xlCellTypeVisible).Cells(i).Resize(rowCount, 1)
             On Error GoTo 0
             If Not rngBlockJ Is Nothing Then
-                ' Скопировать видимые ячейки из столбца E в столбец A на листе 'Вывод'
+                ' РЎРєРѕРїРёСЂРѕРІР°С‚СЊ РІРёРґРёРјС‹Рµ СЏС‡РµР№РєРё РёР· СЃС‚РѕР»Р±С†Р° E РІ СЃС‚РѕР»Р±РµС† A РЅР° Р»РёСЃС‚Рµ 'Р’С‹РІРѕРґ'
                 wsOutput.Range("A" & wsOutput.Cells(wsOutput.Rows.Count, 1).End(xlUp).Row + 1).Resize(rowCount, 1).Value = rngBlockJ.Value
             End If
 
-            ' Выбрать блок видимых строк для копирования из столбца F
+            ' Р’С‹Р±СЂР°С‚СЊ Р±Р»РѕРє РІРёРґРёРјС‹С… СЃС‚СЂРѕРє РґР»СЏ РєРѕРїРёСЂРѕРІР°РЅРёСЏ РёР· СЃС‚РѕР»Р±С†Р° F
             On Error Resume Next
             Set rngBlockK = rngRecord.Columns(2).SpecialCells(xlCellTypeVisible).Cells(i).Resize(rowCount, 1)
             On Error GoTo 0
             If Not rngBlockK Is Nothing Then
-                ' Скопировать видимые ячейки из столбца F в столбец A на листе 'Вывод'
+                ' РЎРєРѕРїРёСЂРѕРІР°С‚СЊ РІРёРґРёРјС‹Рµ СЏС‡РµР№РєРё РёР· СЃС‚РѕР»Р±С†Р° F РІ СЃС‚РѕР»Р±РµС† A РЅР° Р»РёСЃС‚Рµ 'Р’С‹РІРѕРґ'
                 wsOutput.Range("A" & wsOutput.Cells(wsOutput.Rows.Count, 1).End(xlUp).Row + 1).Resize(rowCount, 1).Value = rngBlockK.Value
             End If
         Next i
     Else
-        MsgBox "В столбце F нет видимых ячеек, удовлетворяющих выбранному значению в ComboBox1."
+        MsgBox "Р’ СЃС‚РѕР»Р±С†Рµ F РЅРµС‚ РІРёРґРёРјС‹С… СЏС‡РµРµРє, СѓРґРѕРІР»РµС‚РІРѕСЂСЏСЋС‰РёС… РІС‹Р±СЂР°РЅРЅРѕРјСѓ Р·РЅР°С‡РµРЅРёСЋ РІ ComboBox1."
     End If
     
-    ' Очистить фильтры
+    ' РћС‡РёСЃС‚РёС‚СЊ С„РёР»СЊС‚СЂС‹
     wsData.AutoFilterMode = False
     
-    ' Эта строка закрывает текущую форму (UserForm1)
+    ' Р­С‚Р° СЃС‚СЂРѕРєР° Р·Р°РєСЂС‹РІР°РµС‚ С‚РµРєСѓС‰СѓСЋ С„РѕСЂРјСѓ (UserForm1)
     Unload Me
 End Sub
 
